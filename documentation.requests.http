@@ -1,0 +1,78 @@
+### ENDPOINT TO FETCH AND SAVE all PRICES
+### https://test-algobalanz.herokuapp.com/api/v1/prices
+GET http://localhost:3003/api/v1/dolar-pricer/save-prices
+
+### ENDPOINT TO FETCH AND SAVE all securities IDS
+GET http://localhost:3003/api/v1/dolar-pricer/save-securities-ids
+
+### RESPONSE EXAMPLE
+# {
+#   "securitiesIds": {
+#     "response": [
+#       "AL30-0001-C-CT-ARS",
+#       "AL30-0002-C-CT-ARS",
+#       "AL30-0003-C-CT-ARS",
+#       "AL30C-0001-C-CT-EXT",
+#       "AL30C-0003-C-CT-EXT",
+#       "AL30D-0001-C-CT-USD",
+#       "AL30D-0002-C-CT-USD",
+#       "AL30D-0003-C-CT-USD",
+#       "GD30-0001-C-CT-ARS",
+#       "GD30-0003-C-CT-ARS",
+#       "GD30C-0001-C-CT-EXT",
+#       "GD30C-0003-C-CT-EXT",
+#       "GD30D-0001-C-CT-USD",
+#       "GD30D-0003-C-CT-USD"
+#     ]
+#   }
+# }
+
+### ENDPOINT TO CALCULATE DOLAR MEP and dolar CABLE PRICES GIVING ONE PARTICULAR SECURITY ID IN "ARS" CURRENCVY
+GET http://localhost:3003/api/v1/dolar-pricer/GD30-0001-C-CT-ARS/calculate-dolar-prices
+
+### RESPONSE EXAMPLE
+# {
+#   "securityId": "GD30-0001-C-CT-ARS",
+#   "settlementType": "CI",
+#   "dolarMep": 167.87,
+#   "dolarCable": null
+# }
+
+### ENDPOINT TO CALCULATE DOLAR MEP and dolar CABLE PRICES FOR ALL INSTRUMENTS SPECIES
+GET http://localhost:3003/api/v1/dolar-pricer/all-prices
+### RESPONSE
+# {
+#   "dolarPrices": [
+#     {
+#       "securityId": "AL30-0002-C-CT-ARS",
+#       "settlementType": "24hs",
+#       "dolarMep": 166.57,
+#       "dolarCable": 0
+#     },
+#     {
+#       "securityId": "AL30-0001-C-CT-ARS",
+#       "settlementType": "CI",
+#       "dolarMep": 166.83,
+#       "dolarCable": 170.58
+#     },
+#     {
+#       "securityId": "AL30-0003-C-CT-ARS",
+#       "settlementType": "48hs",
+#       "dolarMep": 167.21,
+#       "dolarCable": 169.58
+#     },
+#     {
+#       "securityId": "GD30-0001-C-CT-ARS",
+#       "settlementType": "CI",
+#       "dolarMep": 166.52,
+#       "dolarCable": 171.1
+#     },
+#     {
+#       "securityId": "GD30-0003-C-CT-ARS",
+#       "settlementType": "48hs",
+#       "dolarMep": 166.8,
+#       "dolarCable": 171.38
+#     }
+#   ]
+# }
+
