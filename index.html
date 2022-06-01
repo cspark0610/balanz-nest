@@ -8,17 +8,14 @@
   </head>
   <body>
     <ul id="app"></ul>
-    <script type="text/javascript">
-      const s = new WebSocket('ws://localhost:8080');
-      s.addEventListener('error', function (m) {
-        console.log('error');
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
+    <script>
+      const socket = io('http://localhost:8000', {
+        transports: ['websocket'],
       });
-      s.addEventListener('open', function (m) {
-        console.log('websocket connection open');
-      });
-      s.addEventListener('message', function (event) {
-        console.log('aca');
-        console.log('Message from server ', event.data);
+      socket.on('connect', () => console.log(socket.id, 'socket id'));
+      socket.on('dolarPrices', function (event) {
+        console.log(event);
       });
     </script>
   </body>

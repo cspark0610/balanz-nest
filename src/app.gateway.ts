@@ -4,22 +4,16 @@ import {
   WebSocketServer,
   OnGatewayConnection,
   OnGatewayDisconnect,
-  OnGatewayInit,
 } from '@nestjs/websockets';
+import { Server } from 'socket.io';
 
-@WebSocketGateway(8080, {
-  transport: ['websocket'],
+@WebSocketGateway(8000, {
+  transports: ['websocket'],
 })
-export class AppGateway
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
-{
+export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  private logger = new Logger();
   @WebSocketServer()
-  wss;
-
-  private logger = new Logger('AppGateway');
-  afterInit() {
-    this.logger.log('Initialized');
-  }
+  public wss = new Server();
 
   handleConnection(client) {
     this.logger.log('New client connected');

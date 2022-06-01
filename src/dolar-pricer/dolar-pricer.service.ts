@@ -5,7 +5,7 @@ import * as securitiesIds from 'src/files/securities-ids.json';
 import { Currencies } from 'src/common/currencies.enum';
 import { SettlementTypes } from 'src/common/settlementTypes.enum';
 import { Symbols } from 'src/common/symbols.enum';
-import { AppGateway } from '../app.gateway';
+import { AppGateway } from 'src/app.gateway';
 
 export interface IResponse {
   securityId: string;
@@ -13,7 +13,6 @@ export interface IResponse {
   dolarMep?: number;
   dolarCable?: number;
 }
-
 @Injectable()
 export class DolarPricerService {
   private prices;
@@ -22,6 +21,7 @@ export class DolarPricerService {
     private readonly fileService: FileService,
     private appGateway: AppGateway,
   ) {
+    // console.log(appGateway.wss);
     this.refetchData();
     this.prices = prices.prices;
     this.ids = securitiesIds.securitiesIds;
@@ -98,11 +98,15 @@ export class DolarPricerService {
     dolarPrices: IResponse[];
   }> {
     const dolarTuples: string[][] = this.generateDolarTuples(this.prices);
-    const dolarPrices = await Promise.all(
+    const dolarPrices: IResponse[] = await Promise.all(
       dolarTuples.map(([securityId]) => this.calculateDolarPrices(securityId)),
     );
-    this.appGateway.wss.emit('message', JSON.stringify(dolarPrices));
+    const emitted: boolean = this.appGateway.wss.emit(
+      'dolarPrices',
+      JSON.stringify(dolarPrices),
+    );
 
+    console.log(emitted, 'emit');
     return { dolarPrices };
   }
 
