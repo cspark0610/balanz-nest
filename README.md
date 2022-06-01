@@ -2,6 +2,10 @@
 
 La documentacion de como utilizar los endpoints se encuentra en el archivo documentation.requests.http
 
+### CONSIGNA
+
+visitar: https://test-algobalanz.herokuapp.com/
+
 ### INFORMACION SOBRE LA API
 
 REST api que muestra la cotizacion de dolar MEP y CABLE para una o todas las securities ids con actualizaciones periodicas cada 2 minutos
@@ -12,11 +16,13 @@ REST api que muestra la cotizacion de dolar MEP y CABLE para una o todas las sec
 
 npm install
 
-#### 2.Para iniciar en modo desarrollo
+#### 2.Setear el nro de PORT deseado para correr la app en el archivo .env.development
+
+#### 3.Para iniciar en modo desarrollo
 
 npm run start:dev
 
-### 3. Para correr los tests unitarios
+#### 4. Para correr los tests unitarios
 
 npm run test
 

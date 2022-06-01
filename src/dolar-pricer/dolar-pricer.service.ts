@@ -5,6 +5,7 @@ import * as securitiesIds from 'src/files/securities-ids.json';
 import { Currencies } from 'src/common/currencies.enum';
 import { SettlementTypes } from 'src/common/settlementTypes.enum';
 import { Symbols } from 'src/common/symbols.enum';
+import { AppGateway } from '../app.gateway';
 
 export interface IResponse {
   securityId: string;
@@ -17,7 +18,10 @@ export interface IResponse {
 export class DolarPricerService {
   private prices;
   private ids: { response: string[] };
-  constructor(private readonly fileService: FileService) {
+  constructor(
+    private readonly fileService: FileService,
+    private appGateway: AppGateway,
+  ) {
     this.refetchData();
     this.prices = prices.prices;
     this.ids = securitiesIds.securitiesIds;
@@ -97,6 +101,8 @@ export class DolarPricerService {
     const dolarPrices = await Promise.all(
       dolarTuples.map(([securityId]) => this.calculateDolarPrices(securityId)),
     );
+    this.appGateway.wss.emit('message', JSON.stringify(dolarPrices));
+
     return { dolarPrices };
   }
 
