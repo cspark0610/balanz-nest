@@ -8,7 +8,8 @@ visitar: https://test-algobalanz.herokuapp.com/
 
 ### INFORMACION SOBRE LA API
 
-REST api que muestra la cotizacion de dolar MEP y CABLE para una o todas las securities ids con actualizaciones periodicas cada 2 minutos
+REST api que muestra la cotizacion de dolar MEP y CABLE para una o todas las securities ids con actualizaciones periodicas por minuto,
+para ver los precios actualizados mediante el socket se debe abrir el archivo HTML.
 
 ### INSTRUCCIONES
 
@@ -22,7 +23,9 @@ npm install
 
 npm run start:dev
 
-#### 4. Para correr los tests unitarios
+#### 4. Para ver los precios renderizados mediante el socket abrir el HTML con "Open in default Browser"
+
+#### 5. Para correr los test unitarios
 
 npm run test
 

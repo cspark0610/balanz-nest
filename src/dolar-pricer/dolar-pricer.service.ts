@@ -21,8 +21,8 @@ export class DolarPricerService {
     private readonly fileService: FileService,
     private appGateway: AppGateway,
   ) {
-    // console.log(appGateway.wss);
     this.refetchData();
+    this.recalculateDolarPrices();
     this.prices = prices.prices;
     this.ids = securitiesIds.securitiesIds;
   }
@@ -34,7 +34,12 @@ export class DolarPricerService {
         this.fileService.saveAllPrices(),
         this.fileService.saveAllSecuritiesIds(),
       ]);
-    }, 1000 * 60 * 2);
+    }, 1000 * 60);
+  }
+  private recalculateDolarPrices(): void {
+    setInterval(() => {
+      this.calculateAllDolarPrices();
+    }, 1000 * 10);
   }
 
   async calculateDolarPrices(securityId: string): Promise<IResponse> {
@@ -103,9 +108,8 @@ export class DolarPricerService {
     );
     const emitted: boolean = this.appGateway.wss.emit(
       'dolarPrices',
-      JSON.stringify(dolarPrices),
+      dolarPrices,
     );
-
     console.log(emitted, 'emit');
     return { dolarPrices };
   }

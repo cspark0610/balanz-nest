@@ -7,15 +7,23 @@
     <title>Balanz</title>
   </head>
   <body>
+    <h1>BALANZ DOLAR PRICES</h1>
     <ul id="app"></ul>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
     <script>
       const socket = io('http://localhost:8000', {
         transports: ['websocket'],
       });
-      socket.on('connect', () => console.log(socket.id, 'socket id'));
+      socket.on('connect', () => console.log('connected?' + socket.connected));
       socket.on('dolarPrices', function (event) {
-        console.log(event);
+        const data = Array.from(event);
+        const ul = document.getElementById('app');
+        ul.innerHTML = '';
+        for (const key of data) {
+          const li = document.createElement('li');
+          li.innerHTML = JSON.stringify(key);
+          ul.appendChild(li);
+        }
       });
     </script>
   </body>
