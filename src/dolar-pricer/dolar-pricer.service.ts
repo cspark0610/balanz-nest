@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { FileService } from 'src/utils/fileService.service';
 import * as prices from 'src/files/all-prices.json';
-import * as securitiesIds from 'src/files/securities-ids.json';
 import { Currencies } from 'src/common/currencies.enum';
 import { SettlementTypes } from 'src/common/settlementTypes.enum';
 import { Symbols } from 'src/common/symbols.enum';
 import { AppGateway } from 'src/app.gateway';
+import { WebSocketService } from 'src/utils/websocket.service';
 
 export interface IResponse {
   securityId: string;
@@ -16,15 +16,16 @@ export interface IResponse {
 @Injectable()
 export class DolarPricerService {
   private prices;
-  private ids: { response: string[] };
+  private ids: string[];
   constructor(
     private readonly fileService: FileService,
     private appGateway: AppGateway,
+    private websocketService: WebSocketService,
   ) {
     this.refetchData();
     this.recalculateDolarPrices();
     this.prices = prices.prices;
-    this.ids = securitiesIds.securitiesIds;
+    this.ids = this.websocketService.getSecuritiesIds();
   }
 
   private refetchData(): void {
@@ -43,7 +44,7 @@ export class DolarPricerService {
   }
 
   async calculateDolarPrices(securityId: string): Promise<IResponse> {
-    if (!this.ids.response.includes(securityId)) {
+    if (!this.ids.includes(securityId)) {
       throw new Error('Security ID not found in possible Securities Ids');
     }
     const {
@@ -110,7 +111,7 @@ export class DolarPricerService {
       'dolarPrices',
       dolarPrices,
     );
-    console.log(emitted, 'emit');
+    console.log('emit', emitted);
     return { dolarPrices };
   }
 

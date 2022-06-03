@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { AppGateway } from 'src/app.gateway';
 import { DolarPricerService } from 'src/dolar-pricer/dolar-pricer.service';
 import { FileService } from 'src/utils/fileService.service';
+import { WebSocketService } from 'src/utils/websocket.service';
 
 describe('DolarPricerService', () => {
   let service: DolarPricerService;
@@ -13,6 +15,10 @@ describe('DolarPricerService', () => {
   const FileServiceMock = {
     saveBySecurityId: jest.fn(),
   };
+  const appGatewayMock = {};
+  const websocketServiceMock = {
+    getSecuritiesIds: jest.fn().mockReturnValue([]),
+  };
 
   beforeEach(async () => {
     jest.clearAllMocks();
@@ -22,6 +28,14 @@ describe('DolarPricerService', () => {
         {
           provide: FileService,
           useValue: FileServiceMock,
+        },
+        {
+          provide: AppGateway,
+          useValue: appGatewayMock,
+        },
+        {
+          provide: WebSocketService,
+          useValue: websocketServiceMock,
         },
       ],
     }).compile();
